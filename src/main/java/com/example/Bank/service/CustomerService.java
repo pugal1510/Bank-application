@@ -7,7 +7,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -21,6 +20,8 @@ public class CustomerService {
 
     @Autowired
     private CustomerRepository customerRepository;
+
+
 
     BankingConstants bb = new BankingConstants();
 
@@ -42,8 +43,8 @@ public class CustomerService {
             customerEntity.setRefno(generateUnique());
             customerEntity.setCreatedBy(bb.CREATEDBY);
             customerEntity.setCreatedOn(LocalDateTime.now());
-
             return customerRepository.save(customerEntity);
+
         }
 
         // If exists → UPDATE
@@ -76,5 +77,6 @@ public class CustomerService {
 
     private String generateUnique() {
         return UUID.randomUUID().toString().toUpperCase();
+
     }
 }

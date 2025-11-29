@@ -14,6 +14,9 @@ public class AcctCreationEntity {
     @Column(name = "ACCOUNT_NUMBER")
     private Long accountnumber;
 
+    @Column(name="CUSTOMER_ID")
+    private String customerid;
+
     @Column(name = "ACCOUNT_TYPE", nullable = false, length = 20)
     private String acctype;
 
@@ -29,8 +32,5 @@ public class AcctCreationEntity {
     @Column(name = "LAST_MODIFIED")
     private LocalDateTime lastmodified;
 
-    @ManyToOne
-    @JoinColumn(name = "CUSTOMER_ID", referencedColumnName = "CUSTOMER_ID")
-    private CustomerEntity customer;
 
 }

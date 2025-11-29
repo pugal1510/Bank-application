@@ -22,7 +22,7 @@ public class TransactionEntity {
     private Double amount;
 
     @Column(name = "TRANSACTION_TIME", nullable = false)
-    private LocalDateTime timestamp;
+    private LocalDateTime transactiontime;
 
     // For deposit/withdraw, only account will be used.
     @ManyToOne
