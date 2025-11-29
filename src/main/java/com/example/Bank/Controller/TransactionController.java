@@ -3,6 +3,7 @@ package com.example.Bank.Controller;
 import com.example.Bank.Entity.AcctCreationEntity;
 import com.example.Bank.Entity.TransactionEntity;
 import com.example.Bank.dto.DepositeRequest;
+import com.example.Bank.dto.TransRequest;
 import com.example.Bank.dto.WithdrawRequest;
 import com.example.Bank.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,5 +28,10 @@ public class TransactionController {
     @PostMapping("/Deposite")
     public TransactionEntity Deposite(@RequestBody DepositeRequest depositeRequest){
         return  transactionService.Deposite(depositeRequest);
+    }
+
+    @PostMapping("/Trans")
+    public TransactionEntity Trans(@RequestBody TransRequest transRequest){
+        return  transactionService.trans(transRequest);
     }
 }

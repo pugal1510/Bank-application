@@ -5,6 +5,7 @@ import com.example.Bank.Entity.TransactionEntity;
 import com.example.Bank.Repository.AccountRepository;
 import com.example.Bank.Repository.TransactionRepository;
 import com.example.Bank.dto.DepositeRequest;
+import com.example.Bank.dto.TransRequest;
 import com.example.Bank.dto.WithdrawRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +48,8 @@ public class TransactionService {
 
         // 3. Deduct and update
         account.setBalance(balance - amount);
+        account.setLastmodified(LocalDateTime.now());
+
         accountRepository.save(account);
 
         // 4. Save transaction
@@ -71,6 +74,7 @@ public class TransactionService {
 
                 double newbalance=amount+balance;
                 account.setBalance(newbalance);
+                account.setLastmodified(LocalDateTime.now());
                 accountRepository.save(account);
 
         TransactionEntity txn = new TransactionEntity();
@@ -82,4 +86,40 @@ public class TransactionService {
         return transactionRepository.save(txn);
 
     }
+    public TransactionEntity trans(TransRequest transRequest) {
+        AcctCreationEntity fromacct = accountRepository
+                .findByAccountnumber(transRequest.getFromAccount())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "FROM Account number not found"));
+
+        AcctCreationEntity toacct = accountRepository
+                .findByAccountnumber(transRequest.getToAccount())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "TO Account number not found"));
+
+        double fromAmount = fromacct.getBalance();
+        double toAmmount = toacct.getBalance();
+        double amount = transRequest.getAmount();
+
+        if (fromAmount > amount) {
+            double newbalancefrom = fromAmount - amount;
+            fromacct.setBalance(newbalancefrom);
+            double newbalanceto = toAmmount + amount;
+            toacct.setBalance(newbalanceto);
+            accountRepository.save(fromacct);
+            accountRepository.save(toacct);
+
+        } else {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Insufficent balance");
+        }
+
+        TransactionEntity txn = new TransactionEntity();
+        txn.setType("Trans");
+        txn.setAmount(amount);
+        txn.setTransactiontime(LocalDateTime.now());
+        txn.setFromAccount(fromacct);
+        txn.setToAccount(toacct);
+
+
+        return transactionRepository.save(txn);
+    }
+
 }

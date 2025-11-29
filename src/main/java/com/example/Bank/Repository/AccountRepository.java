@@ -11,5 +11,8 @@ import java.util.Optional;
 public interface AccountRepository extends JpaRepository<AcctCreationEntity,Long> {
 
     Optional<AcctCreationEntity>findByAccountnumber(Long accountnumber);
+    AcctCreationEntity findBybalance(Long accountnumber1);
+
+
 
 }
