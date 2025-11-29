@@ -20,7 +20,7 @@ public class AcctCreationEntity {
     @Column(name = "ACCOUNT_TYPE", nullable = false, length = 20)
     private String acctype;
 
-    @Column(name = "BALANCE", nullable = false)
+    @Column(name = "BALANCE")
     private Double balance;
 
     @Column(name = "STATUS", length = 20)
@@ -31,6 +31,7 @@ public class AcctCreationEntity {
 
     @Column(name = "LAST_MODIFIED")
     private LocalDateTime lastmodified;
+
 
 
 }
